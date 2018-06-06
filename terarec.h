@@ -7,8 +7,8 @@
 #define TERA_VALUE_LEN 88
 
 typedef struct{
-	char key[TERA_KEY_LEN + 1];
-	char value[TERA_VALUE_LEN + 1];
+  char key[TERA_KEY_LEN + 1];
+  char value[TERA_VALUE_LEN + 1];
 } terarec_t;
 
 extern MPI_Datatype mpi_tera_type;

@@ -9,26 +9,14 @@
 
 #include "terarec.h"
 
-
 #define ZERO  ' '
 #define BASE   (( unsigned long ) ('~' - ' ' + 1))
 #define LENGTH (( unsigned long ) ('P' - ' ' + 1)) * (( unsigned long ) ('~' - ' ' + 1))
             //* (( unsigned long ) ('~' - ' ' + 1))
 
-
-clock_t _time(clock_t t, int rank, int label){
-  if(t != 0){
-    t = clock() -t;
-    printf("%d %d time %f\n", label, rank, ((double) t) /CLOCKS_PER_SEC ); fflush(stdout);
-  }
-
-  return clock();
-}
-
 void memcheck(void * ptr, int i){
   if(ptr == NULL){printf("%d: NULL", i); fflush(stdout);}
 }
-
 
 void terasort(
   terarec_t * local_data,
@@ -37,20 +25,9 @@ void terasort(
   int*        sorted_counts,
   long*       sorted_displs){
 
-  clock_t t = 0;
-
-	int rank, P;
-	MPI_Comm_size (MPI_COMM_WORLD, &P);
-	MPI_Comm_rank (MPI_COMM_WORLD, &rank);
-
-  //printf("summary: %u > %lu = 49 * 95 * %lu\n", UINT_MAX,  LENGTH, BASE);
-
-  //===========================================================================
-  t = _time(t, rank, 0);
-  t = _time(t, rank, 10000);
-  //===========================================================================
-
-  //printf("%d of %d with %d buckets and  %d local_len\n", rank, P, LENGTH, local_len);
+  int rank, P;
+  MPI_Comm_size (MPI_COMM_WORLD, &P);
+  MPI_Comm_rank (MPI_COMM_WORLD, &rank);
 
   unsigned buckets_per_process = (LENGTH / P + 1);
   unsigned length_padded       = buckets_per_process * P;
@@ -59,26 +36,12 @@ void terasort(
   unsigned * outgoing_iter   = calloc(length_padded,  sizeof(unsigned)); memcheck(outgoing_iter,   2);
   unsigned * incoming_breaks = malloc(length_padded * sizeof(unsigned)); memcheck(incoming_breaks, 3);
 
-
-  //===========================================================================
-  t = _time(t, rank, 1);
-  //===========================================================================
-
   //parallelizable
   for(int i = 0; i < local_len; i++ ){
-
-    unsigned bucket   =     (local_data[i].key[0] - ZERO) * BASE //* BASE
-                          + (local_data[i].key[1] - ZERO) //* BASE
-                         // + (local_data[i].key[2] - ZERO)
-    ;
-
+    unsigned bucket = (local_data[i].key[0] - ZERO) * BASE
+                    + (local_data[i].key[1] - ZERO);
     outgoing_breaks[bucket]++;
-
   }
-
-  //===========================================================================
-  t = _time(t, rank, 2);
-  //===========================================================================
 
   MPI_Alltoall(
     outgoing_breaks,
@@ -88,10 +51,6 @@ void terasort(
     buckets_per_process,
     MPI_UNSIGNED,
     MPI_COMM_WORLD);
-
-  //===========================================================================
-  t = _time(t, rank, 3);
-  //===========================================================================
 
   int * sendcounts = calloc(P,  sizeof(int)); memcheck(sendcounts, 4);
   int * recvcounts = malloc(P * sizeof(int)); memcheck(recvcounts, 5);
@@ -121,29 +80,16 @@ void terasort(
   terarec_t* s_buffer = malloc(d_o * sizeof(terarec_t)); memcheck(s_buffer, 8);
   terarec_t* r_buffer = malloc(d_i * sizeof(terarec_t)); memcheck(r_buffer, 9);
 
-  //===========================================================================
-  t = _time(t, rank, 4);
-  //===========================================================================
-
   for (int i = 0; i < local_len; i++) {
-
-    //on some systems unsigned is not large enough
-    unsigned bucket = (local_data[i].key[0] - ZERO) * BASE // * BASE
-                      + (local_data[i].key[1] - ZERO) //* BASE
-                    //  + (local_data[i].key[2] - ZERO)
-                    ;
+    unsigned bucket = (local_data[i].key[0] - ZERO) * BASE
+                    + (local_data[i].key[1] - ZERO);
 
     unsigned idx = outgoing_iter[bucket];
     memcpy(s_buffer + idx, local_data + i, sizeof(terarec_t));
     outgoing_iter[bucket]++;
-
   }
 
   free(outgoing_iter);
-
-  //===========================================================================
-  t = _time(t, rank, 5);
-  //===========================================================================
 
   MPI_Alltoallv(
     s_buffer,
@@ -160,11 +106,6 @@ void terasort(
   free(recvcounts);
   free(sendcounts);
   free(sdispls);
-
-  //===========================================================================
-  t = _time(t, rank, 6);
-  //===========================================================================
-
 
   *sorted_data = malloc(sizeof(terarec_t) * d_i); memcheck(sorted_data, 10);
 
@@ -187,11 +128,7 @@ void terasort(
   free(r_buffer);
   free(rdispls);
   free(incoming_breaks);
-
-  //===========================================================================
-  t = _time(t, rank, 7);
-  //===========================================================================
-
+  
   int count = (int) (right - *sorted_data);
 
   MPI_Allgather(
@@ -207,11 +144,5 @@ void terasort(
 
   for(int i = 1; i < P; i++)
     sorted_displs[i] = sorted_displs[i-1] + sorted_counts[i-1];
-
-  //===========================================================================
-  t = _time(t, rank, 8);
-  //===========================================================================
-
-
 
 }
