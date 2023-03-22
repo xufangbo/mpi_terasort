@@ -1,7 +1,7 @@
 #ifndef __TERAREC_H__
 #define __TERAREC_H__
 
-#include <mpi.h>
+#include <mpi/mpi.h>
 
 #define TERA_KEY_LEN 10
 #define TERA_VALUE_LEN 88

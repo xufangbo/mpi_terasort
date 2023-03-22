@@ -7,7 +7,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <getopt.h>
-#include <mpi.h>
+#include <mpi/mpi.h>
 #include "terarec.h"
 
 
