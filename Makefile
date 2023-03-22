@@ -21,6 +21,9 @@ naivesort: naivesort.c terarec.c
 alltoall: alltoall.c
 	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)	
 
+alltoallv: alltoallv.c
+	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)	
+
 .PHONY: clean
 
 clean:
