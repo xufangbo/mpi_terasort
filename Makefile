@@ -18,6 +18,9 @@ terametrics: terametrics.c terasort.c terarec.c teravalidate.c
 naivesort: naivesort.c terarec.c
 	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)
 
+alltoall: alltoall.c
+	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)	
+
 .PHONY: clean
 
 clean:

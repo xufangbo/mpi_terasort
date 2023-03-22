@@ -2,6 +2,8 @@
     "files.associations": {
         "mpi.h": "c",
         "terarec.h": "c",
-        "omp.h": "c"
+        "omp.h": "c",
+        "limits.h": "c",
+        "stdlib.h": "c"
     }
 }

@@ -38,8 +38,7 @@ void terasort(
 
   //parallelizable
   for(int i = 0; i < local_len; i++ ){
-    unsigned bucket = (local_data[i].key[0] - ZERO) * BASE
-                    + (local_data[i].key[1] - ZERO);
+    unsigned bucket = (local_data[i].key[0] - ZERO) * BASE + (local_data[i].key[1] - ZERO);
     outgoing_breaks[bucket]++;
   }
 
