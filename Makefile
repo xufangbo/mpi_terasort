@@ -18,18 +18,6 @@ terametrics: terametrics.c terasort.c terarec.c teravalidate.c
 naivesort: naivesort.c terarec.c
 	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)
 
-alltoall: mpi_alltoall.c
-	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)	
-
-alltoallv: mpi_alltoallv.c
-	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)
-
-gather: mpi_gather.c
-	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)
-
-allgather: mpi_allgather.c
-	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)	
-
 .PHONY: clean
 
 clean:
