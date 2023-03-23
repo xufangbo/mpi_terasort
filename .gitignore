@@ -7,3 +7,4 @@ data.dat
 alltoall
 alltoallv
 gather
+allgather

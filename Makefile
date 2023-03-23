@@ -27,6 +27,9 @@ alltoallv: mpi_alltoallv.c
 gather: mpi_gather.c
 	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)
 
+allgather: mpi_allgather.c
+	$(MPICC) $(MPICFLAGS) $(MPICOPTFLAGS) -o $@ $^ $(MPILDFLAGS)	
+
 .PHONY: clean
 
 clean:

@@ -2,6 +2,8 @@
 #include "stdio.h"
 #include "stdlib.h"
 
+// https://blog.csdn.net/susan_wang1/article/details/50036867
+
 int main(int argc, char** argv) {
   int P, rank;
   int send[10];
@@ -21,7 +23,7 @@ int main(int argc, char** argv) {
   if (rank == 0) {
     recv = (int*)malloc(P * 10 * sizeof(int));
   }
-  MPI_Gather(send, 10, MPI_INT, recv, 10, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Gather(send, 10, MPI_INT, recv, 10, MPI_INT, 0, MPI_COMM_WORLD); // 0标识数据采集到rank 0上
 
   printf("%d reci - ",rank);
   for (int i = 0; i < P * 10; i++) {
