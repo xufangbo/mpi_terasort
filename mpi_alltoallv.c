@@ -67,3 +67,18 @@ int main(int argc,char **argv)
   MPI_Finalize();
   return 0;
 }
+
+// $ mpirun -np 2 ./alltoallv
+// 1 send -  0 ->  0 : 1 : 2
+// 1 send -  2 ->  1 : 2 : 2
+// 1 send - 10 11 11
+// 0 send -  0 ->  0 : 1 : 1
+// 0 send -  1 ->  1 : 2 : 1
+// 0 send - 00 01 01
+// ------------------------------------------------------------
+// processor 0 's recv_buff is:
+// 0,10,
+// ------------------------------------------------------------
+// processor 1 's recv_buff is:
+// 1,1,11,11,
+
