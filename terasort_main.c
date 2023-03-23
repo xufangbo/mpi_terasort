@@ -65,8 +65,7 @@ int main (int argc, char *argv[]){
   long *sorted_displs = (long*) malloc(sizeof(long) * P);
 
   //Performing the sort
-  terasort(local_data, local_len,
-      &sorted_data, sorted_counts, sorted_displs);
+  terasort(local_data, local_len, &sorted_data, sorted_counts, sorted_displs);
 
   //Writing out the data
   writeSortedData(data_filename, sorted_displs[rank], sorted_counts[rank], sorted_data);

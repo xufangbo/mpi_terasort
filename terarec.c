@@ -20,11 +20,13 @@ MPI_Datatype mpi_tera_type;
 static void assignKey(char* key) {
   for (int i = 0; i < 3; i++) {
     int temp = rand() / 52;
-    if (i < 2)
+    if (i < 2) {
       key[3 + 4 * i] = (char)(' ' + (temp % 95));
+    }
     temp /= 95;
-    if (i < 2)
+    if (i < 2) {
       key[2 + 4 * i] = (char)(' ' + (temp % 95));
+    }
     temp /= 95;
     key[1 + 4 * i] = (char)(' ' + (temp % 95));
     temp /= 95;
