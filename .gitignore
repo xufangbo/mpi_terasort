@@ -6,3 +6,4 @@ naivesort
 data.dat
 alltoall
 alltoallv
+gather
